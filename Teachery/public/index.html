@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="style.css">
+  <title>Document</title>
+ </head>
+
+<body >
+
+ <!-- nav bar--> 
+  <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+      <div class="container">
+          <a class="navbar-brand" href="#"><img width="130px" height ="50px" src="images/logo.svg"></a>
+         
+          <div class="collapse navbar-collapse" id="collapsibleNavbar">
+              <ul class="navbar-nav ml-auto">
+                  <li class="nav-item">
+                       <a class="nav-link" href="#">Home</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="#" data-toggle="modal" data-target="#signup">Sign Up</a>
+                   </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="#"data-toggle="modal" data-target="#login">Login</a>
+                   </li>
+                      <li class="nav-item">
+                      <a id="logout" class="nav-link" href="#">Sign Out</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#"data-toggle="modal" data-target="#contact">Contact</a>
+                 </li>
+              </ul>
+          </div>
+      </div>
+  </nav>
+<!--middle box-->
+<div class="container">
+<div class="jumbotrone">
+  <div class="middle">
+   <h1 style="align-self: center;">Welcome to <b>Teachery</b> !</h1>
+   <hr><br>
+   <image style="margin-left: 220px;" src="images/DTU.jpeg"></image>
+   <br><br>
+   <hr>
+   <h3><marquee>Please Sign In To Access The Portal</marquee></h3>
+   <hr>
+  </div>
+</div>
+</div>
+<!-- SIGN UP -->
+<div id="signup" class="modal fade">
+	<div class="modal-dialog modal-login">
+		<div class="modal-content">
+			<div class="modal-header">				
+				<h4 class="modal-title">Sign Up</h4>
+         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			</div>
+			<div class="modal-body">
+				<form>
+					<div class="form-group">
+						<div class="input-group">
+							<span class="input-group-addon"><i class="fa fa-user"></i></span>
+							<input type="text" class="form-control" id="email1" placeholder="Username" required="required">
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="input-group">
+							<span class="input-group-addon"><i class="fa fa-lock"></i></span>
+							<input type="password" class="form-control" id="psw1" placeholder="Password" required="required">
+						</div>
+					</div>
+					<div class="form-group">
+						<button type="submit" class="btn btn-primary btn-block btn-lg">Sign In</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>    
+<!--LOGIN-->
+<div id="login" class="modal fade">
+	<div class="modal-dialog modal-login">
+		<div class="modal-content">
+			<div class="modal-header">				
+				<h4 class="modal-title">Sign In</h4>
+       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			</div>
+			<div class="modal-body">
+				<form  action="/home" method="post">
+					<div class="form-group">
+						<div class="input-group">
+							<span class="input-group-addon"><i class="fa fa-user"></i></span>
+							<input type="text" class="form-control" id="email2" placeholder="Username" required="required">
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="input-group">
+							<span class="input-group-addon"><i class="fa fa-lock"></i></span>
+							<input type="password" class="form-control" id="psw2" placeholder="Password" required="required">
+						</div>
+					</div>
+					<div class="form-group">
+						<button type="submit" class="btn btn-primary btn-block btn-lg">Sign In</button>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">Don't have an account?Please Sign Up First :)</div>
+		</div>
+	</div>
+</div>    
+<!--CONTACT--> 
+<div id="contact" class="modal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+  
+        <div class="modal-header">
+          <h4 class="modal-title">Developer </h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          Chahat Kumar <br> 
+          <i fa fa-envelope></i> Email : kchahat20@gmail.com
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+</div>  
+<!---script follow-->
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+<script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-functions.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-storage.js"></script>
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyAtrRhB7J-jzZcZ4Dwe0JM8CJ2-N56k-RI",
+    authDomain: "samsungmap-17515.firebaseapp.com",
+    databaseURL: "https://samsungmap-17515.firebaseio.com",
+    projectId: "samsungmap-17515",
+    storageBucket: "samsungmap-17515.appspot.com",
+    messagingSenderId: "221474907579",
+    appId: "1:221474907579:web:2dbf537d241ad79366909e"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  
+  const db = firebase.firestore();
+  const auth = firebase.auth();
+  const functions = firebase.functions();
+  const storage = firebase.storage();
+
+</script>
+    <script src="auth.js"></script>
+  </body>
+</html>

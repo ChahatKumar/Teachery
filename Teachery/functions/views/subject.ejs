@@ -1,0 +1,196 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<div id="mydiv" data-test=<%=code %>></div>
+
+<h1 id="sub1"></h1>
+<h2 id="sub2"></h2>
+
+<hr>
+<form class="admin add-quest">
+    <input type="text" placeholder="add question" name="question" required>
+    <button onclick="addQuestion()" >post</button>
+</form>
+<div >
+<ul id="quest">
+ 
+</ul>
+</div>
+<hr>
+
+<hr>
+<form >
+    <input type="file" name="myFile" id="file" required />
+    <button onclick="upload()" id="btn">upload</button>
+</form>
+<hr>
+<div id="reportlist">
+  <ul id="report">
+    
+  </ul>
+</div>
+
+
+
+<script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-functions.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-storage.js"></script>
+
+<script>
+   
+// Your web app's Firebase configuration
+var firebaseConfig = {
+     apiKey: "AIzaSyAtrRhB7J-jzZcZ4Dwe0JM8CJ2-N56k-RI",
+     authDomain: "samsungmap-17515.firebaseapp.com",
+     databaseURL: "https://samsungmap-17515.firebaseio.com",
+     projectId: "samsungmap-17515",
+     storageBucket: "samsungmap-17515.appspot.com",
+     messagingSenderId: "221474907579",
+     appId: "1:221474907579:web:2dbf537d241ad79366909e"
+   };
+   // Initialize Firebase
+   firebase.initializeApp(firebaseConfig);
+   
+   const db = firebase.firestore();
+   const auth = firebase.auth();
+   const functions = firebase.functions();
+   const storage = firebase.storage();
+</script>
+
+<script>
+// student ejs 
+var current;
+console.log("dfghjk")
+auth.onAuthStateChanged(user => {
+    if (user) {
+    current = user.email;
+    console.log("current user = "+ user.email)
+    user.getIdTokenResult().then(IdTokenResult=>{
+      console.log(IdTokenResult.claims.admin);
+    })
+    } else {
+
+   //  document.getElementById("div").style.display="none"
+    }
+})
+
+/* upload and download and delete start*//********************************************************/
+var test = document.getElementById('mydiv').dataset.test
+let name;
+function upload(){
+    const ref = firebase.storage().ref().child(test);
+    const file = document.querySelector("#file").files[0];
+    name = file.name;
+    const metadata={
+      contentType : file.type
+    } 
+
+    var uploadTask = ref.child(name).put(file);
+ uploadTask.on('state_changed', function(snapshot){
+  var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+ alert('Upload is ' + progress + '% done');
+  switch (snapshot.state) {
+    case firebase.storage.TaskState.PAUSED: // or 'paused'
+      alert('Upload is paused');
+      break;
+    case firebase.storage.TaskState.RUNNING: // or 'running'
+    alert('Upload is running');
+      break;
+  }
+}, function(error) {
+    alert(error)
+}, function() {
+  uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+    alert('File available at', downloadURL);
+  });
+});
+  }
+    var i=0;
+//use version >6
+firebase.storage().ref().child(test).listAll().then(function(result){
+  result.items.forEach(function(reportRef){
+    // console.lo g("report "+ reportRef.toString());
+    const path =reportRef.location.path;
+    downloadReport(reportRef,path);
+  });
+});
+
+function downloadReport(report,path){
+  report.getDownloadURL().then(function(url){
+    var list = document.createElement("li");
+    var btn= document.createElement("button");
+    var BTN = document.createElement("button");
+    btn.className = 'btn btn-info btn-round ';
+    btn.onclick=function(){
+      window.open(url);
+    }
+    //const date = new Date();
+    //let DATE = date.getDate() + "/" +date.getMonth()
+    btn.innerHTML= current;
+    BTN.innerHTML="delete";
+    BTN.onclick = function(){
+     const d = firebase.storage().ref().child(path);
+     d.delete().then(()=>{
+       console.log("deleted eep");
+     }).catch(err=>{
+       console.log(err)
+     })
+    }
+    list.appendChild(btn);
+    list.appendChild(BTN);
+    document.getElementById("report").appendChild(list);
+  });
+}
+/* upload and download over *//****************************************************/
+</script>
+
+<script>
+      
+       var test = document.getElementById('mydiv').dataset.test;
+       db.collection('subjects').where("code","==",test).get().then(snapshot=>{
+            snapshot.docs.forEach(doc=>{
+            document.getElementById("sub1").innerText = doc.data().name; 
+            document.getElementById("sub2").innerText = doc.data().code;
+
+        })
+       })
+
+       db.collection('subjects').where("code","==",test).get().then(snapshot=>{
+            snapshot.docs.forEach(doc=>{
+            var id = doc.id;
+            db.collection('subjects').doc(id).collection('questions').get().then(snapshot=>{
+              snapshot.docs.forEach(doc=>{
+               // console.log(doc.data().q)
+               var li = document.createElement("li");
+               var btn = document.createElement("button");
+               btn.innerHTML="delete"
+               btn.onclick = function(){
+                 var ID = doc.id;
+                 db.collection('subjects').doc(id).collection('questions').doc(ID).delete().then(()=>{
+                   console.log("deleted")
+                 })
+               }
+               li.innerText = doc.data().q;
+               li.appendChild(btn)
+               document.getElementById('quest').appendChild(li);
+              })
+            })         
+          })
+       })  
+       
+       function addQuestion(){
+        var qform = document.querySelector(".add-quest");
+        const question = qform.question.value;
+        db.collection('subjects').where("code","==",test).get().then(snapshot=>{
+            snapshot.docs.forEach(doc=>{
+            var id = doc.id;
+            db.collection('subjects').doc(id).collection('questions').add({
+              q : question
+            })          
+          })
+       })
+       }
+</script>

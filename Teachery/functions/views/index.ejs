@@ -1,0 +1,94 @@
+<h1 class="notuser">please log in  :)</h1>
+<hr>
+<h1 class="user"> welcome <%= ID %></h1>
+
+<form class="center-align admin-actions admin user" style="margin: 40px auto; max-width: 300px;">
+  <input type="email" placeholder="User email" id="admin-email" required />
+  <button class="btn-small yellow darken-2 z-depth-0">Make admin</button>
+</form>
+
+<br>
+<form class="user" id="subject" method="POST" action="/subject">
+  <input type="text" name="code" placeholder="Enter Subject Code (Example : COxxx)">
+  <input type="submit">
+</form>
+
+<hr>
+
+<script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-functions.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-storage.js"></script>
+
+<script>
+   
+   
+   // Your web app's Firebase configuration
+  var firebaseConfig = {
+     apiKey: "AIzaSyAtrRhB7J-jzZcZ4Dwe0JM8CJ2-N56k-RI",
+     authDomain: "samsungmap-17515.firebaseapp.com",
+     databaseURL: "https://samsungmap-17515.firebaseio.com",
+     projectId: "samsungmap-17515",
+     storageBucket: "samsungmap-17515.appspot.com",
+     messagingSenderId: "221474907579",
+     appId: "1:221474907579:web:2dbf537d241ad79366909e"
+   };
+   // Initialize Firebase
+   firebase.initializeApp(firebaseConfig);
+   
+   const db = firebase.firestore();
+   const auth = firebase.auth();
+   const functions = firebase.functions();
+   const storage = firebase.storage();
+</script>
+
+<script>
+var current;
+auth.onAuthStateChanged(user => {
+    if (user) {
+    current = user.email;
+    console.log("current user = "+ user.email)
+    user.getIdTokenResult().then(IdTokenResult=>{
+      console.log(IdTokenResult.claims.admin);
+    })
+    /**setting ui for user*/
+    var user = document.getElementsByClassName("user");
+    for (const property in user) {
+     user[property].style.display="block"
+   } 
+   var notuser = document.getElementsByClassName("notuser");
+    for (const property in notuser) {
+     notuser[property].style.display="none";
+   }
+   /****/
+  }
+    else {
+      /*setting ui for notuser */
+      var user = document.getElementsByClassName("user");
+    for (const property in user) {
+     user[property].style.display="none"
+   } 
+   var notuser = document.getElementsByClassName("notuser");
+    for (const property in notuser) {
+     notuser[property].style.display="block";
+   }
+   /****/
+    }
+})
+ 
+const adminForm = document.querySelector('.admin-actions');
+adminForm.addEventListener('submit', () => {
+
+  const adminEmail = document.querySelector('#admin-email').value;
+  const addAdminRole = functions.httpsCallable('addAdminRole');
+  addAdminRole({ email: adminEmail }).then(result => {
+    console.log(result);
+  });
+});
+
+  
+  </script>
+
+
+
